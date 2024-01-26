@@ -105,6 +105,7 @@ def filter_gt_bboxes(model_name, image_path, bboxes, threshold=0.5):
     model, preprocess = clip.load(model_name, device=device)
 
     filtered_bboxes = []
+    probs_list = []
     labels = ['a picture of people walking', 
               'a picture of stopping and straddling on a bike', 
               'a picture of walking along with a bike', 
@@ -123,7 +124,8 @@ def filter_gt_bboxes(model_name, image_path, bboxes, threshold=0.5):
 
         if probs[0][0] > threshold:
             filtered_bboxes.append(bbox)
-    return filtered_bboxes
+        probs_list.append(probs)
+    return filtered_bboxes, probs_list
 
 def show_vis_ratio_list(gt_path):
     gt_data = json.load(open(gt_path))
@@ -178,7 +180,8 @@ def run_detector_on_dataset():
         detection_bbox = get_detector_bboxes(model, im)
         print("Detected bbox: ", len(detection_bbox))
         print("Filtering...")
-        detection_bbox = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
+        old_detection_bbox = detection_bbox
+        detection_bbox, probs_list = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
         print("Filtered bbox: ", len(detection_bbox))
         gt_bboxes = get_gt_bboxes(gt_path, os.path.basename(im), False)
         gt_ignore_boxes = get_gt_bboxes(gt_path, os.path.basename(im), True)
@@ -288,6 +291,11 @@ def run_detector_on_dataset():
                 for i in range(len(gt_bboxes)):
                     if i not in used_gt:
                         f.write(f"{i} {gt_bboxes[i]}\n")
+                f.close()
+            with open(os.path.join(output_dir, "log_probs", os.path.basename(im).split('.')[0]+"_probs.txt"), "w") as f:
+                for i in range(len(old_detection_bbox)):
+                    x, y, w, h = old_detection_bbox[i]
+                    f.write(f"{i} {x} {y} {w} {h}: {probs_list[i]}\n")
                 f.close()
         else:
             print("Correct case!")
