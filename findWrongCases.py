@@ -292,6 +292,9 @@ def run_detector_on_dataset():
                     if i not in used_gt:
                         f.write(f"{i} {gt_bboxes[i]}\n")
                 f.close()
+            ## Output log_probs file
+            if not os.path.exists(os.path.join(output_dir, "log_probs")):
+                os.makedirs(os.path.join(output_dir, "log_probs"))
             with open(os.path.join(output_dir, "log_probs", os.path.basename(im).split('.')[0]+"_probs.txt"), "w") as f:
                 for i in range(len(old_detection_bbox)):
                     x, y, w, h = old_detection_bbox[i]
