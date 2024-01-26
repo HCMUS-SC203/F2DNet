@@ -162,6 +162,9 @@ def run_detector_on_dataset():
 
     model = init_detector(
         args.config, args.checkpoint, device=torch.device('cuda:0'))
+    
+    print("Start processing...")
+    print("Total number of images: ", len(eval_imgs))
 
     # prog_bar = mmcv.ProgressBar(len(eval_imgs))
     cnt = 0
