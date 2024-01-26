@@ -170,7 +170,7 @@ def run_detector_on_dataset():
         print("------------------")
         print(f"Processing ({cnt}/{len(eval_imgs)}) {im} :")
         detection_bbox = get_detector_bboxes(model, im)
-        detection_bbox = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
+        # detection_bbox = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
         gt_bboxes = get_gt_bboxes(gt_path, os.path.basename(im), False)
         gt_ignore_boxes = get_gt_bboxes(gt_path, os.path.basename(im), True)
         print(f"Detected: {len(detection_bbox)}")
