@@ -105,11 +105,14 @@ def filter_gt_bboxes(model_name, image_path, bboxes, threshold=0.5):
     model, preprocess = clip.load(model_name, device=device)
 
     filtered_bboxes = []
-
+    labels = ['a picture of people walking', 
+              'a picture of stopping and straddling on a bike', 
+              'a picture of walking along with a bike', 
+              'a picture of  people on a vehicle']
     for bbox in bboxes:
         x, y, w, h = bbox
         image = preprocess(Image.open(image_path).crop((x, y, x+w, y+h))).unsqueeze(0).to(device)
-        text = clip.tokenize(["sitting", "walking"]).to(device)
+        text = clip.tokenize(labels).to(device)
 
         with torch.no_grad():
             image_features = model.encode_image(image)
