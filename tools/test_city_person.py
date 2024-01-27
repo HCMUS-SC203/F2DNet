@@ -36,7 +36,7 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         print("rawimage:", data["raw_img"].shape)
         print("image:", type(data["img"]))
         print("image:", data["img"][0].shape)
-        raw_img = T.ToPILImage()(data.pop("raw_img")[0])
+        raw_img = T.ToPILImage()(data.pop("raw_img")[0])    
         raw_img.save("/content/img"+str(i)+".jpg")
         with torch.no_grad():
             result = model(return_loss=False, rescale=not show, **data)
@@ -47,6 +47,8 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # print(data["img"][0].size(0))
         # prob, result = filterclip(data, result)
         # print(type(img))
+            
+        print(result[0])
             
         result[0] = filterclip(raw_img, result[0])
             
