@@ -51,8 +51,14 @@ class Bbox_filter:
 
         print("Text features:", self.label_features)
         print("Image features:", image_features)
-        
-        print(similarity)
+
+        filtered_bboxes = []
+        for prob, bbox in zip(similarity, bboxes):
+            lab_id = torch.argmax(prob)
+            if self.labels[lab_id] == 1:
+                filtered_bboxes.append(bbox)
+
+        return similarity, filtered_bboxes
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='CLIP')
@@ -73,4 +79,8 @@ if __name__ == "__main__":
         assert bboxes["type"] == "XYUV"
 
     filter = Bbox_filter()
-    filter(image, bboxes["data"])
+    similarity, filtered = filter(image, bboxes["data"])
+
+    print("Similarity", similarity)
+    print("Filtered", filtered)
+    
