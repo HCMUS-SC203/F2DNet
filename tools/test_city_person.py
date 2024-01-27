@@ -50,9 +50,9 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # prob, result = filterclip(data, result)
         # print(type(img))
             
-        # print(result[0])
-            
+        print(result[0])  
         result[0] = filterclip(raw_img, result[0])
+        print(result[0])
 
         del raw_img
             
