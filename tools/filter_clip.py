@@ -40,6 +40,7 @@ class Bbox_filter:
         print("Vocab size:", vocab_size)
 
     def __call__(self, image: Image, bboxes):
+        print(type(image))
         padding = 20
         pad_bboxes = list(map(
             lambda box: [

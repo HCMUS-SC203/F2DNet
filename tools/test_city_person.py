@@ -19,16 +19,22 @@ from mmdet.models import build_detector
 
 from tools.cityPerson.eval_demo import validate
 
+import filter_clip
+
 
 def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir=''):
     model.eval()
     results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
+
+    filterclip = filter_clip.Bbox_filter()
+
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=not show, **data)
-        print("Debug", result)
+        # print("Debug", result)
+        prob, result = filterclip(data, result)
         results.append(result)
 
         if show:
