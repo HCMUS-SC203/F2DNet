@@ -40,7 +40,7 @@ class Bbox_filter:
         print("Vocab size:", vocab_size)
 
     def __call__(self, image: Image, bboxes):
-        print(type(image))
+        # print(type(image))
         padding = 20
         pad_bboxes = list(map(
             lambda box: [
@@ -53,7 +53,7 @@ class Bbox_filter:
         ))
         images = []
         for bbox in pad_bboxes:
-            print("bbox", bbox)
+            # print("bbox", bbox)
             crop_img = image.crop(bbox)
             images.append(self.preprocess(crop_img))
             del crop_img
@@ -63,8 +63,8 @@ class Bbox_filter:
 
         similarity = (100.0 * image_features @ self.label_features.T).softmax(dim=-1)
 
-        print("Text features:", self.label_features)
-        print("Image features:", image_features)
+        # print("Text features:", self.label_features)
+        # print("Image features:", image_features)
 
         filtered_bboxes = []
         for prob, bbox in zip(similarity, bboxes):
