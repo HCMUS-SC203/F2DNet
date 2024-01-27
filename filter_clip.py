@@ -55,6 +55,7 @@ class Bbox_filter:
         filtered_bboxes = []
         for prob, bbox in zip(similarity, bboxes):
             lab_id = torch.argmax(prob)
+            print("Debug", prob, bbox)
             if self.labels[lab_id] == 1:
                 filtered_bboxes.append(bbox)
 
