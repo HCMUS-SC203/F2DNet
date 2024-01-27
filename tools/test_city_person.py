@@ -34,11 +34,12 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         with torch.no_grad():
             result = model(return_loss=False, rescale=not show, **data)
         # print("Debug", result)
-        print(type(data["img"]))
-        print(len(data["img"]))
-        print(type(data["img"][0]))
-        print(data["img"][0].size(0))
-        prob, result = filterclip(data, result)
+        # print(type(data["img"]))
+        # print(len(data["img"]))
+        # print(type(data["img"][0]))
+        # print(data["img"][0].size(0))
+        # prob, result = filterclip(data, result)
+        print(len(result))
         results.append(result)
 
         if show:
