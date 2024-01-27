@@ -40,8 +40,18 @@ class Bbox_filter:
         print("Vocab size:", vocab_size)
 
     def __call__(self, image: Image, bboxes):
+        padding = 10
+        pad_bboxes = list(map(
+            lambda box: [
+                max(0, box[0]-padding), 
+                max(0, box[1]-padding), 
+                min(image.width-1, box[2]+padding), 
+                min(image.height-1, box[3]+padding)
+            ], 
+            bboxes
+        ))
         images = []
-        for bbox in bboxes:
+        for bbox in pad_bboxes:
             images.append(self.preprocess(image.crop(bbox)))
         image_input = torch.tensor(np.stack(images)).cuda()
         image_features = self.model.encode_image(image_input).float()
