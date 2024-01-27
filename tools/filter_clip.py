@@ -73,7 +73,7 @@ class Bbox_filter:
             if self.labels[lab_id][0] == 1:
                 filtered_bboxes.append(bbox)
 
-        return similarity, filtered_bboxes
+        return filtered_bboxes
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='CLIP')
