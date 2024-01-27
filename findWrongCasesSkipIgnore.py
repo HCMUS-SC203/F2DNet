@@ -137,7 +137,7 @@ def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5)
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
 
         # find max prob
-        max_prob_id = torch.argmax(probs)
+        max_prob_id = np.argmax(probs[0])
         if probs[0][max_prob_id] > threshold and labels[max_prob_id][0] == 1:
             filtered_bboxes.append(bbox)
         probs_list.append(probs)
