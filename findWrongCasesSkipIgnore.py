@@ -296,8 +296,10 @@ def run_detector_on_dataset():
             ## Output crop images
             if not os.path.exists(os.path.join(output_dir, "crop_images")):
                 os.makedirs(os.path.join(output_dir, "crop_images"))
+            if not os.path.exists(os.path.join(output_dir, "crop_images", os.path.basename(im).split('.')[0])):
+                os.makedirs(os.path.join(output_dir, "crop_images", os.path.basename(im).split('.')[0]))
             for i in range(len(crop_image_list)):
-                crop_image_list[i].save(os.path.join(output_dir, "crop_images", os.path.basename(im).split('.')[0]+"_"+str(i)+".png"))
+                crop_image_list[i].save(os.path.join(output_dir, "crop_images", os.path.basename(im).split('.')[0], f"{i}.png"))
         else:
             print("Correct case!")
         # prog_bar.update()
