@@ -21,6 +21,7 @@ from tools.cityPerson.eval_demo import validate
 
 import filter_clip
 import torchvision.transforms as T
+import numpy as np
 
 def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir=''):
     model.eval()
@@ -51,7 +52,7 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # print(type(img))
             
         print(result[0])  
-        result[0] = filterclip(raw_img, result[0])
+        result[0] = np.array(filterclip(raw_img, result[0]))
         print(result[0])
 
         del raw_img
