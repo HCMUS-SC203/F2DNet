@@ -48,7 +48,8 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # print(type(img))
         # img.save("/content/img"+str(i)+".jpg")
             
-        print(result.size)
+        print(type(result[0]))
+        print(result)
         
 
         print(len(result))
