@@ -98,7 +98,7 @@ def get_detector_bboxes(model, image_path, score_thr=0.3):
         bboxes[i][3] -= bboxes[i][1]
     return bboxes
 
-def filter_gt_bboxes(model_name, image_path, bboxes, threshold=0.5):
+def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5):
     if (model_name == "None"):
         return bboxes
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -106,12 +106,18 @@ def filter_gt_bboxes(model_name, image_path, bboxes, threshold=0.5):
 
     filtered_bboxes = []
     probs_list = []
+    crop_image_list = []
     labels = ['a picture of people walking', 
               'a picture of stopping and straddling on a bike', 
               'a picture of walking along with a bike', 
               'a picture of  people on a vehicle']
     for bbox in bboxes:
         x, y, w, h = bbox
+        x = max(0, x-padding)
+        y = max(0, y-padding)
+        w = min(w+2*padding, 1920-x)
+        crop_image = Image.open(image_path).crop((x, y, x+w, y+h))
+        crop_image_list.append(crop_image)
         image = preprocess(Image.open(image_path).crop((x, y, x+w, y+h))).unsqueeze(0).to(device)
         text = clip.tokenize(labels).to(device)
 
@@ -125,7 +131,7 @@ def filter_gt_bboxes(model_name, image_path, bboxes, threshold=0.5):
         if probs[0][0] > threshold:
             filtered_bboxes.append(bbox)
         probs_list.append(probs)
-    return filtered_bboxes, probs_list
+    return filtered_bboxes, crop_image_list, probs_list
 
 def show_vis_ratio_list(gt_path):
     gt_data = json.load(open(gt_path))
@@ -181,7 +187,7 @@ def run_detector_on_dataset():
         print("Detected bbox: ", len(detection_bbox))
         print("Filtering...")
         old_detection_bbox = detection_bbox
-        detection_bbox, probs_list = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
+        detection_bbox, crop_image_list, probs_list = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
         print("Filtered bbox: ", len(detection_bbox))
         gt_bboxes = get_gt_bboxes(gt_path, os.path.basename(im), False)
         gt_ignore_boxes = get_gt_bboxes(gt_path, os.path.basename(im), True)
@@ -300,6 +306,11 @@ def run_detector_on_dataset():
                     x, y, w, h = old_detection_bbox[i]
                     f.write(f"{i} {x} {y} {w} {h}: {probs_list[i]}\n")
                 f.close()
+            ## Output crop images
+            if not os.path.exists(os.path.join(output_dir, "crop_images")):
+                os.makedirs(os.path.join(output_dir, "crop_images"))
+            for i in range(len(crop_image_list)):
+                crop_image_list[i].save(os.path.join(output_dir, "crop_images", os.path.basename(im).split('.')[0]+"_"+str(i)+".png"))
         else:
             print("Correct case!")
         # prog_bar.update()
