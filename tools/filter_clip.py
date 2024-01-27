@@ -20,7 +20,7 @@ class Bbox_filter:
         self.labels = [
             [1, "a picture of people walking"], 
             [0, "a picture of stopping and straddling on a bike"], 
-            [0, "a picture of walking along with a bike"],
+            [1, "a picture of walking along with a bike"],
             [0, "a picture of people on a vehicle"]
         ]
 
