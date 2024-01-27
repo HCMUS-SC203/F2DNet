@@ -35,7 +35,7 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
             result = model(return_loss=False, rescale=not show, **data)
         # print("Debug", result)
         print(type(data["img"]))
-        print(data)
+        print(len(data["img"]))
         prob, result = filterclip(data, result)
         results.append(result)
 
