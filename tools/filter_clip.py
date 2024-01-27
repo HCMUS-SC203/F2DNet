@@ -53,6 +53,7 @@ class Bbox_filter:
         ))
         images = []
         for bbox in pad_bboxes:
+            print("bbox", bbox)
             images.append(self.preprocess(image.crop(bbox)))
         image_input = torch.tensor(np.stack(images)).cuda()
         image_features = self.model.encode_image(image_input).float()
