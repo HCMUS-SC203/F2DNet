@@ -112,8 +112,7 @@ def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5)
     # get width and height of the image
     width, height = Image.open(image_path).size
     labels = [[1, 'a picture of people walking'], 
-              [1, 'a picture of walking along with a bike'],
-              [0, 'a picture of straddling on a bike'], 
+              [0, 'a picture of people riding a bike'], 
               [0, 'a picture of people on a vehicle']]
     for bbox in bboxes:
         x, y, w, h = bbox
