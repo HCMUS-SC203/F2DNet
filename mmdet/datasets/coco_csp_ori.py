@@ -251,6 +251,7 @@ class CocoCSPORIDataset(CustomDataset):
         return ann
 
     def prepare_train_img(self, idx):
+        print("Prepare training image")
         img_info = self.img_infos[idx]
         # load image
         img = mmcv.imread(osp.join(self.img_prefix, img_info['filename']))
