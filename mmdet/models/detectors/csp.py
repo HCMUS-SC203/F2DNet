@@ -294,6 +294,7 @@ class CSP(SingleStageDetector):
         return (cls_score > 0.5).float().sum(), rois.size(0)
 
     def simple_test(self, img, img_meta, rescale=False, return_id=False):
+        print("simple_test CSP")
         x = self.extract_feat(img)
         outs = self.bbox_head(x)
         bbox_inputs = outs + (img_meta, self.test_cfg.csp_head if self.refine else self.test_cfg, False) # TODO://Handle rescalling
