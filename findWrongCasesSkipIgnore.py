@@ -111,10 +111,10 @@ def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5)
     crop_image_list = []
     # get width and height of the image
     width, height = Image.open(image_path).size
-    labels = ['a picture of people walking', 
-              'a picture of stopping and straddling on a bike', 
-              'a picture of walking along with a bike', 
-              'a picture of  people on a vehicle']
+    labels = [[1, 'a picture of people walking'], 
+              [1, 'a picture of walking along with a bike'],
+              [0, 'a picture of straddling on a bike'], 
+              [0, 'a picture of people on a vehicle']]
     for bbox in bboxes:
         x, y, w, h = bbox
         x = max(0, x-padding)
@@ -133,7 +133,9 @@ def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5)
             logits_per_image, logits_per_text = model(image, text)
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
 
-        if probs[0][0] > threshold:
+        # find max prob
+        max_prob_id = torch.argmax(probs)
+        if probs[0][max_prob_id] > threshold and labels[max_prob_id][0] == 1:
             filtered_bboxes.append(bbox)
         probs_list.append(probs)
     return filtered_bboxes, crop_image_list, probs_list
@@ -248,7 +250,9 @@ def run_detector_on_dataset():
             # Output the image
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
-            cv2.imwrite(os.path.join(output_dir, os.path.basename(im)), image)
+            if not os.path.exists(os.path.join(output_dir, "images")):
+                os.makedirs(os.path.join(output_dir, "images"))
+            cv2.imwrite(os.path.join(output_dir, "images", os.path.basename(im)), image)
             # Output log file
             ## Create log folder
             if not os.path.exists(os.path.join(output_dir, "log")):
