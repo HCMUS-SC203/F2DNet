@@ -20,7 +20,6 @@ from mmdet.models import build_detector
 from tools.cityPerson.eval_demo import validate
 
 import filter_clip
-import torchvision.transforms as T
 
 def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir=''):
     model.eval()
@@ -31,6 +30,8 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
     filterclip = filter_clip.Bbox_filter()
 
     for i, data in enumerate(data_loader):
+        print(data.keys())
+        print(type(data["raw_img"]))
         with torch.no_grad():
             result = model(return_loss=False, rescale=not show, **data)
         # print("Debug", result)
@@ -43,7 +44,6 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # print(type(img))
         # img.save("/content/img"+str(i)+".jpg")
         
-        print(data.keys())
 
         print(len(result))
         results.append(result)
