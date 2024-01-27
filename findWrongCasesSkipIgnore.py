@@ -28,6 +28,7 @@ def parse_args():
     parser.add_argument('threshold_IoU', type=float, help='threshold of IoU')
     parser.add_argument('clip_model', type=str, help='clip model name')
     parser.add_argument('filter_threshold', type=float, help='threshold of clip model')
+    parser.add_argument('clip_padding', type=int, help='padding of clip model')
     parser.add_argument('show_tp_gt', type=bool, help='show true positive ground truth')
     parser.add_argument(
         '--launcher',
@@ -167,6 +168,7 @@ def run_detector_on_dataset():
     threshold_IoU = args.threshold_IoU
     clip_model = args.clip_model
     filter_threshold = args.filter_threshold
+    clip_padding = args.clip_padding
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     print(input_dir)
@@ -188,7 +190,7 @@ def run_detector_on_dataset():
         print("Detected bbox: ", len(detection_bbox))
         print("Filtering...")
         old_detection_bbox = detection_bbox
-        detection_bbox, crop_image_list, probs_list = filter_gt_bboxes(clip_model, im, detection_bbox, filter_threshold)
+        detection_bbox, crop_image_list, probs_list = filter_gt_bboxes(clip_model, im, detection_bbox, clip_padding, filter_threshold)
         print("Filtered bbox: ", len(detection_bbox))
         gt_bboxes = get_gt_bboxes(gt_path, os.path.basename(im), False)
         # gt_ignore_boxes = get_gt_bboxes(gt_path, os.path.basename(im), True)
