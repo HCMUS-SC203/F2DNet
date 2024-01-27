@@ -41,7 +41,7 @@ class Bbox_filter:
 
     def __call__(self, image: Image, bboxes):
         print(type(image))
-        padding = 0
+        padding = 20
         pad_bboxes = list(map(
             lambda box: [
                 max(0, box[0]-padding), 
