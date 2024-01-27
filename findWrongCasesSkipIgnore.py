@@ -228,16 +228,20 @@ def run_detector_on_dataset():
             used_detection.add(u)
             used_gt.add(v)
             used_edge_id.add(i)
-        is_wrong_case = False
+        is_correct_case = True
         for i in range(len(gt_bboxes)):
             if i not in used_gt:
-                is_wrong_case = True
+                is_correct_case = False
+                break
+        for i in range(len(detection_bbox)):
+            if i not in used_detection:
+                is_correct_case = False
                 break
         RED = (0, 0, 255)
         GREEN = (0, 255, 0)
         BLUE = (255, 0, 0)
         YELLOW = (0, 255, 255)
-        if is_wrong_case:
+        if not is_correct_case:
             print("Wrong case!")
             image = cv2.imread(im)
             # Draw the ground truth
