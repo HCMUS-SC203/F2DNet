@@ -138,7 +138,12 @@ def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5)
 
         # find max prob
         max_prob_id = np.argmax(probs[0])
-        if probs[0][max_prob_id] > threshold and labels[max_prob_id][0] == 1:
+        if probs[0][max_prob_id] >= threshold:
+            if labels[max_prob_id][0] == 0:
+                pass
+            else:
+                filtered_bboxes.append(bbox)
+        else:
             filtered_bboxes.append(bbox)
         probs_list.append(probs)
     return filtered_bboxes, crop_image_list, probs_list
