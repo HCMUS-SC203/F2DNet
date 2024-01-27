@@ -56,7 +56,7 @@ class Bbox_filter:
         for prob, bbox in zip(similarity, bboxes):
             lab_id = torch.argmax(prob)
             print("Debug", prob, bbox)
-            if self.labels[lab_id] == 1:
+            if self.labels[lab_id][0] == 1:
                 filtered_bboxes.append(bbox)
 
         return similarity, filtered_bboxes
