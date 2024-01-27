@@ -41,6 +41,7 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # prob, result = filterclip(data, result)
         img = T.ToPILImage()(data["img"][0][0])
         print(type(img))
+        img.save("/content/img"+str(i)+".jpg")
 
         print(len(result))
         results.append(result)
