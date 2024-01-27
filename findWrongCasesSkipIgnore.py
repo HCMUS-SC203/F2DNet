@@ -124,7 +124,10 @@ def filter_gt_bboxes(model_name, image_path, bboxes, padding = 5, threshold=0.5)
         crop_image = Image.open(image_path).crop((x, y, x+w, y+h))
         crop_image_list.append(crop_image)
         image = preprocess(Image.open(image_path).crop((x, y, x+w, y+h))).unsqueeze(0).to(device)
-        text = clip.tokenize(labels).to(device)
+        labels_text = []
+        for label in labels:
+            labels_text.append(label[1])
+        text = clip.tokenize(labels_text).to(device)
 
         with torch.no_grad():
             image_features = model.encode_image(image)
