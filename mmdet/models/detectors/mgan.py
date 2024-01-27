@@ -76,6 +76,7 @@ class MGAN(BaseDetector, RPNTestMixin, BBoxTestMixin):
         return x
 
     def simple_test(self, img, img_meta, proposals=None, rescale=False):
+        print("simple_test MGAN")
         """Test without augmentation."""
         assert self.with_bbox, "Bbox head must be implemented."
 

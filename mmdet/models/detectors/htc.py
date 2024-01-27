@@ -266,6 +266,7 @@ class HybridTaskCascade(CascadeRCNN):
         return losses
 
     def simple_test(self, img, img_meta, proposals=None, rescale=False):
+        print("simple_test HTC")
         x = self.extract_feat(img)
         proposal_list = self.simple_test_rpn(
             x, img_meta, self.test_cfg.rpn) if proposals is None else proposals

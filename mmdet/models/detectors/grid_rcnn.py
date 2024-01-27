@@ -173,6 +173,7 @@ class GridRCNN(TwoStageDetector):
         return losses
 
     def simple_test(self, img, img_meta, proposals=None, rescale=False):
+        print("simple_test G-RCNN")
         """Test without augmentation."""
         assert self.with_bbox, "Bbox head must be implemented."
 

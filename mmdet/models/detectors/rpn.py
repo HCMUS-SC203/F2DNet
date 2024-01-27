@@ -55,6 +55,7 @@ class RPN(BaseDetector, RPNTestMixin):
         return losses
 
     def simple_test(self, img, img_meta, rescale=False):
+        print("simple_test RPN")
         x = self.extract_feat(img)
         proposal_list = self.simple_test_rpn(x, img_meta, self.test_cfg.rpn)
         if rescale:
