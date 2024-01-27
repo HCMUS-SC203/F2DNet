@@ -48,6 +48,9 @@ class Bbox_filter:
         image_features /= image_features.norm(dim=-1, keepdim=True)
 
         similarity = (100.0 * image_features @ self.label_features.T).softmax(dim=-1)
+
+        print("Text features:", self.label_features)
+        print("Image features:", image_features)
         
         print(similarity)
 
