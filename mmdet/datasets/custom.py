@@ -303,6 +303,7 @@ class CustomDataset(Dataset):
         return data
 
     def prepare_test_img(self, idx):
+        print("Prepare test img")
         """Prepare an image for testing (multi-scale and flipping)"""
         img_info = self.img_infos[idx]
         ann = self.get_ann_info(idx)
