@@ -4,7 +4,7 @@ import json
 import numpy as np
 import torch
 import clip
-import from PIL import Image
+from PIL import Image
 
 model_name = "ViT-B/32"
 clip.available_models()
