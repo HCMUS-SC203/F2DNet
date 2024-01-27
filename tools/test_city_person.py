@@ -31,11 +31,11 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
     filterclip = filter_clip.Bbox_filter()
 
     for i, data in enumerate(data_loader):
-        print(data.keys())
-        print("rawimage:", type(data["raw_img"]))
-        print("rawimage:", data["raw_img"].shape)
-        print("image:", type(data["img"]))
-        print("image:", data["img"][0].shape)
+        # print(data.keys())
+        # print("rawimage:", type(data["raw_img"]))
+        # print("rawimage:", data["raw_img"].shape)
+        # print("image:", type(data["img"]))
+        # print("image:", data["img"][0].shape)
         raw_img = T.ToPILImage()(data.pop("raw_img")[0].permute(2,0,1))
         # raw_img.save("/content/img"+str(i)+".jpg")
         with torch.no_grad():
@@ -48,17 +48,17 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # prob, result = filterclip(data, result)
         # print(type(img))
             
-        print(result[0])
+        # print(result[0])
             
         result[0] = filterclip(raw_img, result[0])
 
         del raw_img
             
-        print(type(result[0]))
-        print(result)
+        # print(type(result[0]))
+        # print(result)
         
 
-        print(len(result))
+        # print(len(result))
         results.append(result)
 
         if show:
