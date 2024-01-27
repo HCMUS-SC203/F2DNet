@@ -11,6 +11,7 @@ from .transforms import (ImageTransform, BboxTransform, MaskTransform,
 from .utils import to_tensor, random_scale
 from .extra_aug import ExtraAugmentation
 
+import PIL
 
 @DATASETS.register_module
 class CustomDataset(Dataset):
@@ -309,7 +310,9 @@ class CustomDataset(Dataset):
         ann = self.get_ann_info(idx)
         gt_bboxes = ann['bboxes']
 
-        img = mmcv.imread(osp.join(self.img_prefix, img_info['filename']))
+        image_path = osp.join(self.img_prefix, img_info['filename'])
+        img = mmcv.imread(image_path)
+        raw_img = PIL.Image.open(image_path).convert("RGB")
         if self.proposals is not None:
             proposal = self.proposals[idx][:self.num_max_proposals]
             if not (proposal.shape[1] == 4 or proposal.shape[1] == 5):
@@ -362,7 +365,7 @@ class CustomDataset(Dataset):
                 imgs.append(_img)
                 img_metas.append(DC(_img_meta, cpu_only=True))
                 proposals.append(_proposal)
-        data = dict(img=imgs, img_meta=img_metas)
+        data = dict(img=imgs, img_meta=img_metas, raw_img=raw_img)
         if self.proposals is not None:
             data['proposals'] = proposals
         return data
