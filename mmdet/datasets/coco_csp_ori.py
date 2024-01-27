@@ -125,6 +125,7 @@ class CocoCSPORIDataset(CustomDataset):
         self.upper_more_factor = upper_more_factor
 
         # set group flag for the sampler
+        print("Init dataset")
         if not self.test_mode:
             self._set_group_flag()
         # transforms
