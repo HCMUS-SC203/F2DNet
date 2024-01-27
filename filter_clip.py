@@ -1,3 +1,6 @@
+import argparse
+import json
+
 import numpy as np
 import torch
 import clip
@@ -6,7 +9,7 @@ import from PIL import Image
 model_name = "ViT-B/32"
 clip.available_models()
 
-class bbox_filter:
+class Bbox_filter:
     def __init__(self):
         model, preprocess = clip.load("ViT-B/32")
 
@@ -48,3 +51,23 @@ class bbox_filter:
         
         print(similarity)
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='CLIP')
+    parser.add_argument('--image', type=str)
+    parser.add_argument('--bboxes', type=str)
+
+    args = parser.parse_args()
+
+    image = Image.open(args.image).convert("RGB")
+
+    with open(args.bboxes, "r") as fi:
+        bboxes = json.load(fi)
+
+    assert "type" in bboxes
+    if bboxes["type"] == "XYWH":
+        bboxes["data"] = list(map(lambda x: [x[0], x[1], x[0]+x[2], x[1]+x[3]], bboxes["data"]))
+    else:
+        assert bboxes["type"] == "XYUV"
+
+    filter = Bbox_filter()
+    filter(image, bboxes["data"])
