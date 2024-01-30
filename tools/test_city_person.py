@@ -237,7 +237,9 @@ def main():
         for id, boxes in enumerate(outputs):
             boxes=boxes[0]
             if type(boxes) == list:
+                print("!!!!!!! type == list => boxes = boxes[0]")
                 boxes = boxes[0]
+            print(boxes)
             boxes[:, [2, 3]] -= boxes[:, [0, 1]]
             if len(boxes) > 0:
                 for box in boxes:
