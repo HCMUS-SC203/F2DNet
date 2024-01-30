@@ -51,9 +51,10 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
         # prob, result = filterclip(data, result)
         # print(type(img))
             
-        print(result[0])  
+        # print(result[0])  
         result[0] = np.array(filterclip(raw_img, result[0]))
-        print(result[0])
+        print("Type of result[0]", type(result[0]))
+        print("Type of result[0][0]", type(result[0][0]))
 
         del raw_img
             
