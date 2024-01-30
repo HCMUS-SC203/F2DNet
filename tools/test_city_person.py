@@ -20,7 +20,7 @@ from mmdet.models import build_detector
 from tools.cityPerson.eval_demo import validate
 
 import filter_clip
-import torchvision.transforms as T
+
 import numpy as np
 
 def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir=''):
@@ -32,37 +32,13 @@ def single_gpu_test(model, data_loader, show=False, save_img=False, save_img_dir
     filterclip = filter_clip.Bbox_filter()
 
     for i, data in enumerate(data_loader):
-        # print(data.keys())
-        # print("rawimage:", type(data["raw_img"]))
-        # print("rawimage:", data["raw_img"].shape)
-        # print("image:", type(data["img"]))
-        # print("image:", data["img"][0].shape)
         raw_img_tensor = data.pop("raw_img")
-        raw_img = T.ToPILImage()(raw_img_tensor[0].permute(2,0,1))
-        del raw_img_tensor
-        # raw_img.save("/content/img"+str(i)+".jpg")
+
         with torch.no_grad():
             result = model(return_loss=False, rescale=not show, **data)
-        # print("Debug", result)
-        # print(type(data["img"]))
-        # print(len(data["img"]))
-        # print(type(data["img"][0]))
-        # print(data["img"][0].size(0))
-        # prob, result = filterclip(data, result)
-        # print(type(img))
             
-        # print(result[0])  
-        result[0] = np.array(filterclip(raw_img, result[0]))
-        print("Type of result[0]", type(result[0]))
-        # print("Type of result[0][0]", type(result[0][0]))
-
-        del raw_img
-            
-        # print(type(result[0]))
-        # print(result)
-        
-
-        # print(len(result))
+        result = np.array(filterclip(raw_img_tensor, result))
+    
         results.append(result)
 
         if show:
@@ -238,7 +214,6 @@ def main():
             boxes=boxes[0]
             if type(boxes) == list:
                 boxes = boxes[0]
-            print(boxes)
             if len(boxes) > 0:
                 boxes[:, [2, 3]] -= boxes[:, [0, 1]]
                 for box in boxes:
