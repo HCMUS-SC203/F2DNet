@@ -19,6 +19,7 @@ class Bbox_filter:
         self.model.cuda().eval()
 
         self.box_padding = 20
+        self.threshold = 0.7
 
         self.labels = [
             [1, "a picture of people walking"], 
@@ -65,7 +66,7 @@ class Bbox_filter:
         filtered_bboxes = []
         for prob, bbox in zip(similarity, bboxes):
             lab_id = torch.argmax(prob)
-            if self.labels[lab_id][0] == 1:
+            if prob[lab_id] < self.threshold or self.labels[lab_id][0] == 1:
                 filtered_bboxes.append(bbox)
 
         return filtered_bboxes
