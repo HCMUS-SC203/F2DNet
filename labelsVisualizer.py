@@ -61,7 +61,7 @@ def visualize_labels():
             # cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
             # cv2.putText(img, box['category'], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         # cv2.imwrite(osp.join(output_dir, img), img)
-        print(label_set)
+    print(label_set)
 
 if __name__ == '__main__':
     visualize_labels()
