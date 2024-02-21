@@ -63,7 +63,7 @@ def visualize_labels():
         # change img to jpg
         # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         for obj in gt['objects']:
-            x1, y1, x2, y2 = obj['bbox']
+            x1, y1, width, height = obj['bbox']
             # vis_x1, vis_y1, vis_x2, vis_y2 = obj['bboxVis']
             label = obj['label']
             label_set.add(label)
