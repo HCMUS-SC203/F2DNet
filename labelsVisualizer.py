@@ -26,6 +26,9 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def RGB2BGR(tuple):
+    return (tuple[2], tuple[1], tuple[0])
+
 def visualize_labels():
     args = parse_args()
     input_img_dir = args.input_img_dir
@@ -69,7 +72,7 @@ def visualize_labels():
             # vis_x1, vis_y1, vis_x2, vis_y2 = obj['bboxVis']
             label = obj['label']
             label_set.add(label)
-            cv2.rectangle(img, (x1, y1), (x2, y2), map_label_to_color[label], 2)
+            cv2.rectangle(img, (x1, y1), (x2, y2), RGB2BGR(map_label_to_color[label]), 2)
             # cv2.putText(img, box['category'], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         new_img_path = osp.join(output_dir, img_name + '.png')
         print("creating new image: ", new_img_path)
