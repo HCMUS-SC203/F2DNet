@@ -35,6 +35,7 @@ def visualize_labels():
     if not osp.exists(output_dir):
         os.makedirs(output_dir)
     img_list = os.listdir(input_img_dir)
+    print('hehe')
     for img in img_list:
         img_path = osp.join(input_img_dir, img)
         img_name = img.split('.')[0]
