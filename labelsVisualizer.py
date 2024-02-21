@@ -59,4 +59,4 @@ def visualize_labels():
         # cv2.imwrite(osp.join(output_dir, img), img)
 
 if __name__ == '__main__':
-    args = parse_args()
+    visualize_labels()
