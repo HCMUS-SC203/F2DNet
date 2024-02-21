@@ -49,17 +49,19 @@ def visualize_labels():
         img_path = osp.join(input_img_dir, img)
         img_name = img.split('.')[0]
         # split the img_name using '_' and get everything except the last element, then join them together using '_' again
-        if gt_suffix == '':
-            img_name_comp = img_name.split('_')
-        else:
-            img_name_comp = img_name.split('_')[:-1]
-            img_name_comp.append(gt_suffix)
-        img_name = '_'.join(img_name_comp)
-        gt_path = osp.join(gt_dir, img_name + '.json')
+        img_name_comp = img_name.split('_')
+        gt_name_comp = img_name_comp
+        if gt_suffix != '':
+            gt_name_comp = img_name.split('_')[:-1]
+            gt_name_comp.append(gt_suffix)
+        gt_name = '_'.join(gt_name_comp)
+        gt_path = osp.join(gt_dir, gt_name + '.json')
         print(gt_path)
         with open(gt_path, 'r') as f:
             gt = json.load(f)
         img = cv2.imread(img_path)
+        # change img to jpg
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         for obj in gt['objects']:
             x1, y1, x2, y2 = obj['bbox']
             # vis_x1, vis_y1, vis_x2, vis_y2 = obj['bboxVis']
@@ -67,7 +69,7 @@ def visualize_labels():
             label_set.add(label)
             cv2.rectangle(img, (x1, y1), (x2, y2), map_label_to_color[label], 2)
             # cv2.putText(img, box['category'], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.imwrite(osp.join(output_dir, img), img)
+        cv2.imwrite(osp.join(output_dir, img_name, '.jpg'), img)
     print(label_set)
 
 if __name__ == '__main__':
