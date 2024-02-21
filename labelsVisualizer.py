@@ -69,7 +69,9 @@ def visualize_labels():
             label_set.add(label)
             cv2.rectangle(img, (x1, y1), (x2, y2), map_label_to_color[label], 2)
             # cv2.putText(img, box['category'], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.imwrite(osp.join(output_dir, img_name, '.png'), img)
+        new_img_path = osp.join(output_dir, img_name + '.png')
+        print("creating new image: ", new_img_path)
+        cv2.imwrite(new_img_path, img)
     print(label_set)
 
 if __name__ == '__main__':
