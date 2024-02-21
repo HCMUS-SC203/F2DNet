@@ -32,6 +32,7 @@ def visualize_labels():
     output_dir = args.output_dir
     gt_dir = args.gt_dir
     gt_suffix = args.gt_suffix
+    print('keke')
     if not osp.exists(output_dir):
         os.makedirs(output_dir)
     img_list = os.listdir(input_img_dir)
