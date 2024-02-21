@@ -54,8 +54,8 @@ def visualize_labels():
             gt = json.load(f)
         img = cv2.imread(img_path)
         for obj in gt['objects']:
-            x1, y1, x2, y2 = obj['bbox']
-            vis_x1, vis_y1, vis_x2, vis_y2 = obj['bboxVis']
+            # x1, y1, x2, y2 = obj['bbox']
+            # vis_x1, vis_y1, vis_x2, vis_y2 = obj['bboxVis']
             label = obj['label']
             label_set.add(label)
             # cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
