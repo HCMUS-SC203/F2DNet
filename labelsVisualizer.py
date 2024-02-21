@@ -5,10 +5,10 @@ import os.path as osp
 import sys
 sys.path.insert(0, osp.join(osp.dirname(osp.abspath(__file__)), '../'))
 # import time
-# import cv2
+import cv2
 # import torch
 # import glob
-# import json
+import json
 # import mmcv
 # import numpy as np
 # import clip
@@ -37,6 +37,7 @@ def visualize_labels():
         os.makedirs(output_dir)
     img_list = os.listdir(input_img_dir)
     print('hehe')
+    label_set = set()
     for img in img_list:
         img_path = osp.join(input_img_dir, img)
         img_name = img.split('.')[0]
@@ -49,13 +50,16 @@ def visualize_labels():
         img_name = '_'.join(img_name_comp)
         gt_path = osp.join(gt_dir, img_name + '.json')
         print(gt_path)
-        # with open(gt_path, 'r') as f:
-        #     gt = json.load(f)
-        # img = cv2.imread(img_path)
-        # for box in gt:
-        #     x1, y1, x2, y2 = box['bbox']
-        #     cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        #     cv2.putText(img, box['category'], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        with open(gt_path, 'r') as f:
+            gt = json.load(f)
+        img = cv2.imread(img_path)
+        for obj in gt['objects']:
+            x1, y1, x2, y2 = obj['bbox']
+            vis_x1, vis_y1, vis_x2, vis_y2 = obj['bboxVis']
+            label = obj['label']
+            label_set.add(label)
+            # cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            # cv2.putText(img, box['category'], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         # cv2.imwrite(osp.join(output_dir, img), img)
 
 if __name__ == '__main__':
